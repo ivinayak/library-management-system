@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
 import {
     AppBar,
     Box,
@@ -23,6 +24,7 @@ import { UserForm } from "../user-form/user-form"
 import { Book } from "../book/book"
 import { WithLoginProtector } from "../access-control/login-protector"
 import { WithAdminProtector } from "../access-control/admin-protector"
+import classes from "./styles.module.css"
 
 
 export const AppLayout = () => {
@@ -124,7 +126,12 @@ export const AppLayout = () => {
                                         </MenuItem>
                                     </Menu>
                                 </>
-                            ) : (
+                            ) : (<>
+                            <div className={classes.actionsContainer}>
+                            <Button component={RouterLink} to="/users/add"
+                                sx={{ my: 2, color: "white", display: "block" }}>
+                                    Add User
+                                </Button>
                                 <Button
                                     onClick={() => {
                                         setOpenLoginDialog(true)
@@ -133,6 +140,9 @@ export const AppLayout = () => {
                                 >
                                     Login
                                 </Button>
+                            </div>
+                                
+                                </>
                             )}
                         </Box>
                     </Toolbar>
@@ -167,6 +177,13 @@ export const AppLayout = () => {
                                 <UserForm />
                             </WithAdminProtector>
                         </WithLoginProtector>
+                    }
+                    exact
+                />
+                <Route
+                    path="/users/add"
+                    element={
+                        <UserForm />
                     }
                     exact
                 />

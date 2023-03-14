@@ -29,6 +29,7 @@ export const BooksList = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [activeBookIsbn, setActiveBookIsbn] = useState("")
     const [openModal, setOpenModal] = useState(false)
+    const [openUserModal, setOpenUserModal] = useState(false)
     const { isAdmin, user, token, userId } = useUser()
     const [activeUserId, setActiveUserId] = useState("")
 
@@ -46,7 +47,7 @@ export const BooksList = () => {
         if (activeUserId && nonAdminUsers.length) {
             BackendApi.user.deleteUser(activeUserId, token).then(({ success }) => {
                 getNonAdminUsers().catch(console.error)
-                setOpenModal(false)
+                setOpenUserModal(false)
                 setActiveBookIsbn("")
             })
         }
@@ -296,7 +297,7 @@ export const BooksList = () => {
                                                                         size="small"
                                                                         onClick={(e) => {
                                                                             setActiveUserId(book.userId)
-                                                                            setOpenModal(true)
+                                                                            setOpenUserModal(true)
                                                                         }}
                                                                     >
                                                                         Delete
@@ -321,13 +322,13 @@ export const BooksList = () => {
                                     page={page}
                                     onPageChange={(e, newPage) => setPage(newPage)}
                                 />
-                                <Modal open={openModal} onClose={(e) => setOpenModal(false)}>
+                                <Modal open={openUserModal} onClose={(e) => setOpenUserModal(false)}>
                                     <Card className={classes.conf_modal}>
                                         <CardContent>
                                             <h2>Are you sure?</h2>
                                         </CardContent>
                                         <CardActions className={classes.conf_modal_actions}>
-                                            <Button variant="contained" onClick={() => setOpenModal(false)}>
+                                            <Button variant="contained" onClick={() => setOpenUserModal(false)}>
                                                 Cancel
                                             </Button>
                                             <Button variant="contained" color="secondary" onClick={deleteNonAdminUser}>
